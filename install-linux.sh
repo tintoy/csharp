@@ -1,11 +1,13 @@
 #!/bin/sh
 echo 'Installing .NET Core...'
 
-curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
-sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
-sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-trusty-prod trusty main" > /etc/apt/sources.list.d/dotnetdev.list'
+# .NET Core 2.1 preview2 SDK packages for Debian / Ubuntu are currently broken, so we install from tarball instead.
 sudo apt-get -qq update
-sudo apt-get install -y dotnet-sdk-2.1.300-preview1-008174
+sudo apt-get install -y jq libunwind8 liblttng-ust0 libcurl3 libssl1.0.0 libuuid1 libkrb5-3 zlib1g libicu52
+sudo curl -L -o /usr/share/dotnet-sdk.tar.gz https://download.microsoft.com/download/3/7/C/37C0D2E3-2056-4F9A-A67C-14DEFBD70F06/dotnet-sdk-2.1.300-preview2-008530-linux-x64.tar.gz
+sudo mkdir -p /usr/share/dotnet
+sudo tar -C /usr/share/dotnet -xvzf /usr/share/dotnet-sdk.tar.gz
+sudo rm /usr/share/dotnet-sdk.tar.gz
 
 echo 'Installing kubecl'
 curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/v1.9.0/bin/linux/amd64/kubectl
